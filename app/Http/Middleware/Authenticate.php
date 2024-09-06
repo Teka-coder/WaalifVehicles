@@ -5,22 +5,21 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class Authenticate
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::check() && Auth::user()->role->name === $role) {
-            return $next($request);
+        if (!Auth::guard($guard)->check()) {
+            return redirect()->route('login'); // Adjust this to your login route
         }
 
-        return response()->json(['error' => 'Forbidden'], 403);
+        return $next($request);
     }
 }

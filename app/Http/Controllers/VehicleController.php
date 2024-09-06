@@ -15,11 +15,13 @@ class VehicleController extends Controller
     
     public function create()
     {
+        // This method is accessible only by admin, handle access control in routes
         return view('vehicles.form');
     }
     
     public function store(Request $request)
     {
+        // Handle admin access control in routes
         $validatedData = $request->validate([
             'make' => 'required|string',
             'model' => 'required|string',
@@ -39,12 +41,14 @@ class VehicleController extends Controller
     
     public function edit($id)
     {
+        // This method is accessible only by admin, handle access control in routes
         $vehicle = Vehicle::findOrFail($id);
         return view('vehicles.form', compact('vehicle'));
     }
     
     public function update(Request $request, $id)
     {
+        // Handle admin access control in routes
         $vehicle = Vehicle::findOrFail($id);
         $validatedData = $request->validate([
             'make' => 'required|string',
@@ -59,9 +63,9 @@ class VehicleController extends Controller
     
     public function destroy($id)
     {
+        // Handle admin access control in routes
         $vehicle = Vehicle::findOrFail($id);
         $vehicle->delete();
         return redirect()->route('vehicles.index')->with('success', 'Vehicle deleted successfully');
     }
-    
 }
